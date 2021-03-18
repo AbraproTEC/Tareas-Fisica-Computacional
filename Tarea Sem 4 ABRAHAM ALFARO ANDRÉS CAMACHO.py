@@ -70,6 +70,7 @@ def RK4(funcion, presion_inicial, y):
 
 p_aprox_RK45 = spy.solve_ivp(F, [altura_inicial, altura_final], [p0],\
                              t_eval= y,method='RK45')
+p_aprox_RK45_resultados = p_aprox_RK45.y[0]
 
 # Se define el arreglo que resulta de la solución analítica
 
@@ -80,6 +81,40 @@ p_exacta = ((-y / 200 + 293) ** (200 * M * g / R)) * ((101325) / \
 
 print('Mediante método Runge-Kutta 4 \n\n', RK4(F,p0,y),\
       '\n\nmediante la función de la biblioteca scipy \n\n',\
-      p_aprox_RK45.y[0],'\n\nmediante la solución analítica \n\n', p_exacta)
+      p_aprox_RK45_resultados,'\n\nmediante la solución analítica \n\n', p_exacta)
+
+# Se crea una gráfica y una tabla con los resultados de los dos métodos y
+# la solución analitica
+
+plt.suptitle('Comparacion de los valores exactos con las aproximaciones obtenidas')
+
+plt.subplot2grid((2,2),(0,0), rowspan=2)
+plt.title('Solución exacta vs RK4')
+plt.plot(y, p_exacta,marker = 'o', color = 'r', label='Valor exacto')
+plt.plot(y, RK4(F,p0,y), color = 'b', label='Valor aproximado RK4')
+plt.axis([altura_inicial, altura_final, 70000, 102000])
+plt.xlabel("y (m)")
+plt.ylabel("p (Pa)")
+plt.grid(True)
+plt.legend(loc='upper right')
+
+plt.subplot2grid((2,2),(0,1), rowspan=2)
+plt.title('Solución exacta vs RK45')
+plt.plot(y, p_exacta,marker = 'o', color = 'r', label='Valor exacto')
+plt.plot(y, p_aprox_RK45_resultados, color = 'g', label='Valor aproximado RK45')
+plt.axis([altura_inicial, altura_final, 70000, 102000])
+plt.xlabel("y (m)")
+plt.ylabel("p (Pa)")
+plt.grid(True)
+plt.legend(loc='upper right')
+
+plt.show()
+
+
+conjuntodatos = pds.DataFrame({'altura': y, 'Aprox. RK4': RK4(F,p0,y),\
+                               'Aprox. RK45': p_aprox_RK45_resultados, 'P analitico': p_exacta}\
+                              , columns=['altura', 'Aprox. RK4', 'Aprox. RK45', 'P analitico'])
+
+print(conjuntodatos)
 
 ### FIN DEL CÓDIGO ###
