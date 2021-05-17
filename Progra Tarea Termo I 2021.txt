@@ -1,0 +1,67 @@
+{A una central eléctrica de turbina de gas entra aire (considerándolo como gas ideal) al compresor a una presión P_1 = 100 [kPa], T_1 = 300 [K] 
+con una relación de presión r_p = 8. La temperatura del gas en la entrada de la turbina es de T_3 = 1300 [K]
+Se encontrará:
+a) La temperatura del gas a la salida del compresor y de la turbina.
+b) La relación de trabajo de retroceso.
+c) La eficiencia térmica del proceso.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------}
+$Tabstops 0,25 in
+$UnitSystem mass K  kPa kJ Degrees
+
+"Información inicial conocida para el análisis del ciclo ideal"
+$ifnot DiagramWindow {Estas entradas se accesarán solo si la ventana de diagramas no está visible}
+	P[1]=100 [kPa]		"Presión en la entrada al compresor"	
+	T[1]=300 [K]		"Temperatura en la entrada al compresor"
+	r_p = 8			"Relación de presión"
+	eta_c=1			"Eficiencia del compresor ideal"
+	eta_T=1			"Eficiencia de la turbina ideal"
+	T[3]=1300 [K]		"Temperatura en la entrada de la turbina"
+$endif
+
+"1) Análisis del proceso 1 --> 2 (compresión isentrópica de un gas ideal)"
+{P[1] = 100 [kPa]				"Presión en la entrada al compresor"}		
+{T[1] = 300 [K]					"Temperatura en la entrada al compresor"}
+h[1] = enthalpy(Air;T=T[1])			"Entalpía en la entrada al compresor"
+s[1] = entropy(Air;T=T[1];P=P[1])			"Entropía en la entrada al compresor"
+{r_p = 8						"Relación de presión"}
+
+s_ideal[2] = s[1]					"Condición de compresión isentrópica ideal"
+s_ideal[1] = s_ideal[2]
+P[2] = r_p*P[1]					"Presión en la salida del compresor"
+T[2]=Temperature(Air;h=h[2])			"Temperatura en la salida del compresor"
+T_ideal[1] = T[1]
+T_ideal[2] = Temperature(Air;h=h_ideal[2])
+h_ideal[2] = enthalpy(Air;s=s_ideal[2];P=P[2]) 	"Entalpía en la salida del compresor"
+s[2] = entropy(Air;T=T[2];P=P[2])			"Entropía en la salida del compresor real"
+
+{eta_c = 1}
+eta_c = (h_ideal[2] - h[1])/(h[2] - h[1])		"Definición de la eficiencia isentrópica de un compresor"
+w_c = h[2] - h[1]					"Trabajo de entrada al compresor"
+
+"2) Análisis del proceso 3 --> 4 (expansión isentrópica de un gas ideal)"
+P[3] = P[2]					"Despreciamos las perdidas de presión en la absorción de calor"
+{T[3] = 1300 [K]					"Temperatura en la entrada de la turbina"}
+h[3] = Enthalpy(Air;T=T[3])			"Entalpía en la entrada de la turbina"
+s[3] = Entropy(Air;T=T[3];P=P[3]) 		"Entropía en la entrada de la turbina"
+
+s_ideal[4] = s[3]					"Condición de expansión isentrópica"
+s_ideal[3] = s_ideal[4]
+P[4] = (1/r_p)*P[3]				"Presión en la salida de la turbina"
+T[4] = Temperature(Air;h=h[4])			"Temperatura en la salida de la turbina"
+T_ideal[3] = T[3]
+T_ideal[4] = Temperature(Air;h=h_ideal[4])
+h_ideal[4] = enthalpy(Air;s=s_ideal[4];P=P[4])	"Entalpía en la salida de la turbina"
+s[4] = entropy(Air;T=T[4];P=P[4])			"Entropía en la salida de la turbina real"
+
+{eta_T = 1}
+eta_T = (h[3] - h[4])/(h[3] - h_ideal[4])		"Definición de la eficiencia isentrópica de una turbina"
+w_T = h[3] - h[4]					"Trabajo de salida de la turbina"
+
+"3) Cálculos restantes necesarios"
+r_bw = w_c / w_T				"Relación de trabajo de retroceso"
+q_entrada = h[3] - h[2]				"Entrada de calor al ciclo"
+w_neto = w_T - w_c				"Trabajo neto de salida del ciclo"
+eta_Ter = w_neto / q_entrada			"Eficiencia térmica del ciclo"
+eta_ideal_Brayton = 1 - 1 / (r_p^((k-1)/k))		"Eficiencia térmica ideal de Brayton"
+k = 1,4
