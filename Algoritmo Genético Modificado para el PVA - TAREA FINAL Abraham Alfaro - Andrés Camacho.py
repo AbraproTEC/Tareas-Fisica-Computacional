@@ -1,24 +1,10 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
-# Tarea S15: AG aplicado al problema del vendedor ambulante (PVA)
+# Tarea S15: AGM aplicado al problema del vendedor ambulante (PVA)
 # Estudiantes: Abraham Alfaro Alvarado / Andrés Camacho Alvarado
 # Profesores: Esteban Pérez Hidalgo / Álvaro Amador Jara
-
-
-# In[2]:
-
 
 # Importación de los paquetes necesarios
 import numpy as np
 import matplotlib.pyplot as plt
-
-
-# In[3]:
-
 
 # Parte 2) Algoritmo genético estandar Modificado(AGM)
 
@@ -26,17 +12,9 @@ import matplotlib.pyplot as plt
 archivo = 'CoordenadasCiudades.txt'
 coordCiudades = np.loadtxt(archivo)
 
-
-# In[4]:
-
-
 # Se generan dos funciones: ObtenerLongitudCaminoVecinosMásCercanos(coordCiudades)
 # y DistanciaEntreCiudades(nodo1, nodo2, coordCiudades) las cuales son necesarias
 # para el correcto funcionamiento del algorimto genético modificado.
-
-
-# In[5]:
-
 
 def DistanciaEntreCiudades(nodo1, nodo2, coordCiudades):
     '''
@@ -52,10 +30,6 @@ def DistanciaEntreCiudades(nodo1, nodo2, coordCiudades):
     
     return longitudTrayectoria
 
-
-# In[28]:
-
-
 def ObtenerLongitudCaminoVecinosMásCercanos(coordCiudades):
     """
     Esta función obtiene la longitud del camino de los vecinos más cercanos y la trayecoria
@@ -70,8 +44,8 @@ def ObtenerLongitudCaminoVecinosMásCercanos(coordCiudades):
     nCiudades = len(coordCiudades)
     
     # La ciudad inicial para la iteración se selecciona aleatoriamente
-#     ciudadInicial = np.random.randint(nCiudades)
-    ciudadInicial = 48
+    ciudadInicial = np.random.randint(nCiudades)
+
     ciudadActual = ciudadInicial
     ciudadesVisitadas = [ciudadInicial] # Se agrega a la lista la inicial visitada
     
@@ -95,21 +69,9 @@ def ObtenerLongitudCaminoVecinosMásCercanos(coordCiudades):
     
     return ciudadesVisitadas
 
-
-# In[7]:
-
-
 #2.a) y 2.b) Inicialización
 
-
-# In[8]:
-
-
 #2.e) Operaodor Mutación
-
-
-# In[9]:
-
 
 def OperadorMutación(cromosoma):
     """
@@ -131,10 +93,6 @@ def OperadorMutación(cromosoma):
     # -------------------------------------#
     return cromosoma
 
-
-# In[10]:
-
-
 def OperadorMutaciónModificado(cromosoma):
     '''
     Aplica de 3 a 10 mutaciones a los 49 cromosomos restantes
@@ -152,10 +110,6 @@ def OperadorMutaciónModificado(cromosoma):
         
     # Se retorna el cromosoma mutado
     return cromosomaMutado
-
-
-# In[11]:
-
 
 def InicializaciónModificada(tamañoPoblación, coordCiudades):
     """
@@ -183,15 +137,7 @@ def InicializaciónModificada(tamañoPoblación, coordCiudades):
         
     return población
 
-
-# In[12]:
-
-
 #2.c) Función de ajuste
-
-
-# In[13]:
-
 
 def FuncionDeAjuste(cromosoma, coordCiudades):
     '''
@@ -223,17 +169,9 @@ def FuncionDeAjuste(cromosoma, coordCiudades):
     # retornamos el ajuste   
     return 1/longitudCamino
 
-
-# In[14]:
-
-
 #2.d) NO HAY OPERADORES EVOLUCIONARIOS
 
-
 # # Implementación del Algoritmo Genético Estándar
-
-# In[35]:
-
 
 def Optimización():
     '''
@@ -321,10 +259,6 @@ def Optimización():
     # print('Puntuación Máxima: {}'.format(ajusteMax))
     return listaValoresAjuste, iMejorIndividuo
 
-
-# In[33]:
-
-
 # Se obtiene la lista de valores de ajuste
 # del algoritmo de optimización
 listaValoresAjuste, iMejorIndividuo = Optimización()
@@ -340,15 +274,7 @@ print('El ajuste máximo es: {}'.format(ajusteMax))
 distanciaCorta = 1 / ajusteMax 
 print('La distancia más corta recorrida es: {}'.format(distanciaCorta))
 
-
-# In[ ]:
-
-
 # Sección de graficación
-
-
-# In[17]:
-
 
 def GráficasEvolución(listaValoresAjuste):
     #Procesamiento de los valores de ajuste obtenidos
@@ -366,10 +292,6 @@ def GráficasEvolución(listaValoresAjuste):
     ax.set_ylabel('valores de ajuste')
     ax.legend(loc = 'best')
     plt.show()
-
-
-# In[18]:
-
 
 def GraficaLaTrayectoria(trayectoria):
     trayectoria = np.copy(trayectoria)
@@ -394,32 +316,13 @@ def GraficaLaTrayectoria(trayectoria):
     plt.show()
     return
 
-
-# In[34]:
-
-
 # Se grafican la evolución temporal de los valores de ajuste
 GráficasEvolución(listaValoresAjuste)
 
-
-# In[36]:
-
-
 # Se grafica el camino
 GraficaLaTrayectoria(iMejorIndividuo)
-
-
-# In[ ]:
-
 
 # Se guarda el camino más corto encontrado
 encabezado = 'Indices de la trayectoria más corta'
 matriz=[iMejorIndividuo]
 np.savetxt('CaminoMásCorto_AGM.txt', matriz, delimiter=',',newline='\n',  fmt='%d', header= encabezado)
-
-
-# In[ ]:
-
-
-
-
