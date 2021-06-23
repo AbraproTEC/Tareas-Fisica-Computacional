@@ -1,24 +1,10 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
 # Tarea S15: AG aplicado al problema del vendedor ambulante (PVA)
 # Estudiantes: Abraham Alfaro Alvarado / Andrés Camacho Alvarado
 # Profesores: Esteban Pérez Hidalgo / Álvaro Amador Jara
 
-
-# In[2]:
-
-
 # Importación de los paquetes necesarios
 import numpy as np
 import matplotlib.pyplot as plt
-
-
-# In[3]:
-
 
 # Parte 1) Algoritmo genético estandar (AG)
 
@@ -26,21 +12,9 @@ import matplotlib.pyplot as plt
 archivo = 'CoordenadasCiudades.txt'
 coordCiudades = np.loadtxt(archivo)
 
-
-# In[4]:
-
-
 #1.a) Inicialización
 
-
-# In[5]:
-
-
 #1.b) Codificación de los cromosomas
-
-
-# In[6]:
-
 
 def Codificación(tamañoPoblación, coordCiudades):
     """
@@ -64,15 +38,7 @@ def Codificación(tamañoPoblación, coordCiudades):
     # Se retorna la población inicializada
     return población
 
-
-# In[7]:
-
-
 #1.c) Función de ajuste
-
-
-# In[8]:
-
 
 def DistanciaEntreCiudades(nodo1, nodo2, coordCiudades):
     '''
@@ -87,10 +53,6 @@ def DistanciaEntreCiudades(nodo1, nodo2, coordCiudades):
     longitudTrayectoria = np.sqrt(deltaX**2 + deltaY**2)
     
     return longitudTrayectoria
-
-
-# In[9]:
-
 
 def FuncionDeAjuste(cromosoma, coordCiudades):
     '''
@@ -122,21 +84,9 @@ def FuncionDeAjuste(cromosoma, coordCiudades):
     # retornamos el ajuste   
     return 1/longitudCamino
 
-
-# In[10]:
-
-
 #1.d) NO HAY OPERADORES EVOLUCIONARIOS SOLO EL DE MUTACIÓN
 
-
-# In[11]:
-
-
 #1.e) Operaodor Mutación
-
-
-# In[12]:
-
 
 def OperadorMutación(cromosoma):
     """
@@ -158,11 +108,7 @@ def OperadorMutación(cromosoma):
     # -------------------------------------#
     return cromosoma
 
-
 # # Implementación del Algoritmo Genético Estándar
-
-# In[75]:
-
 
 def Optimización():
     '''
@@ -255,10 +201,6 @@ def Optimización():
     # print('Puntuación Máxima: {}'.format(ajusteMax))
     return listaValoresAjuste, iMejorIndividuo
 
-
-# In[85]:
-
-
 # Se obtiene la lista de valores de ajuste
 # del algoritmo de optimización
 listaValoresAjuste, iMejorIndividuo = Optimización()
@@ -274,15 +216,7 @@ print('El ajuste máximo es: {}'.format(ajusteMax))
 distanciaCorta = 1 / ajusteMax 
 print('La distancia más corta recorrida es: {} unidades'.format(distanciaCorta))
 
-
-# In[ ]:
-
-
 # Sección de graficación
-
-
-# In[86]:
-
 
 def GráficasEvolución(listaValoresAjuste):
     #Procesamiento de los valores de ajuste obtenidos
@@ -300,10 +234,6 @@ def GráficasEvolución(listaValoresAjuste):
     ax.set_ylabel('valores de ajuste')
     ax.legend(loc = 'best')
     plt.show()
-
-
-# In[87]:
-
 
 def GraficaLaTrayectoria(trayectoria):
     trayectoria = np.copy(trayectoria)
@@ -328,32 +258,13 @@ def GraficaLaTrayectoria(trayectoria):
     plt.show()
     return
 
-
-# In[88]:
-
-
 # Se grafican la evolución temporal de los valores de ajuste
 GráficasEvolución(listaValoresAjuste)
 
-
-# In[89]:
-
-
 # Se grafica el camino
 GraficaLaTrayectoria(iMejorIndividuo)
-
-
-# In[90]:
-
 
 # Se guarda en un archivo txt el camino
 encabezado = 'Indices de la trayectoria más corta'
 matriz=[iMejorIndividuo]
 np.savetxt('CaminoMásCorto_AGE.txt', matriz, delimiter=',',newline='\n',  fmt='%d', header= encabezado)
-
-
-# In[ ]:
-
-
-
-
